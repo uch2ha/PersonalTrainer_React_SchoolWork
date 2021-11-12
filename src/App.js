@@ -1,29 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
-import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
-import CustomersList from './components/customersList';
-import TrainingList from './components/trainingsList';
-import { purple } from '@material-ui/core/colors';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core'
+import { purple } from '@material-ui/core/colors'
+import Layout from './components/Layout'
+import CustomersList from './components/customers/customersList'
+import TrainingsList from './components/trainings/trainingsList'
+
 
 
 
 function App() {
-  
   return (
-    <div className="App" style={{marginTop: 20}}> 
-        <BrowserRouter >
-          <div >
-            <Link to="/" style={{textDecoration: 'none', fontSize: 25}}>CustomersList</Link>{" "}
-            <Link to="/trainingsList" style={{paddingLeft: 15, textDecoration: 'none', fontSize: 25, }}>TrainingList</Link>{" "}
-            <Switch>
-              <Route exact path="/" component={CustomersList}/>
-              <Route exact path="/trainingsList" component={TrainingList}/>
-              <Route render={()=> <h1>Page not found</h1>}/>
-            </Switch>
-          </div>
-        </BrowserRouter>
-    </div>
+    <ThemeProvider >
+      <Router>
+        <Layout>
+          <Switch>
+            <Route exact path="/">
+              <CustomersList />
+            </Route>
+            <Route path="/trainigsList">
+              <TrainingsList />
+            </Route>
+          </Switch>
+        </Layout>
+      </Router>
+    </ThemeProvider>
   );
 }
 
