@@ -48,8 +48,8 @@ export default function AddTrainingToCustomer({saveTraining, customer}){
                     name="date"
                     value={training.date}
                     onChange={e => handleInputChange(e)}
-                    label="date"
-                    // type="datetime-local"
+                    label=""
+                    type="datetime-local"
                     fullWidth
                 />
                 <TextField
@@ -58,6 +58,7 @@ export default function AddTrainingToCustomer({saveTraining, customer}){
                     value={training.duration}
                     onChange={e => handleInputChange(e)}
                     label="duration"
+                    type="number"
                     fullWidth
                 />
                 <TextField

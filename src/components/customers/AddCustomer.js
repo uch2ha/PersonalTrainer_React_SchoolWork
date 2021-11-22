@@ -6,107 +6,89 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { PinDropSharp } from '@material-ui/icons';
+import { useHistory } from 'react-router';
 
 
-export default function AddCustomer(props){
+export default function AddCustomer(){
 
-    const [open, setOpen] = React.useState(false);
-    const [customer, setCustomer] = React.useState({
-        firstname:'', lastname:'', streetaddress:'', postcode:'', city:'', email:'', phone:''
-    });
-    
-    const handleClickOpen = () => {
-      setOpen(true);
-    };
-  
-    const handleClose = () => {
-      setOpen(false);
-    };
+    const [customer, setCustomer] = React.useState([]);
 
-    const handleInputChange = (event) =>{
-        setCustomer({...customer, [event.target.name]: event.target.value })
-    }
+    const history = useHistory();
 
-    const addCustomer = () =>{
-        props.saveCustomer(customer);
-        handleClose();
-    }
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log(customer)
+        fetch('https://customerrest.herokuapp.com/api/customers', {
+          method: 'POST',
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(customer)
+        }).then(() => {
+          history.push('/customers');
+        })
+      }
 
     return(
-        <div>
-        <Button style={{margin: 10}} variant="outlined" color="primary" onClick={handleClickOpen}>
-            Add customer
-        </Button>
-        <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-            <DialogTitle id="form-dialog-title">New customer</DialogTitle>
-            <DialogContent>
-                <TextField
-                    autoFocus
-                    margin="dense"
-                    name="firstname"
-                    value={customer.firstname}
-                    onChange={e => handleInputChange(e)}
-                    label="firstname"
-                    fullWidth
+        <div className="create">
+            <h2>Add New Customer</h2>
+            <form onSubmit={handleSubmit}>
+                <label>First Name:</label>
+                <input 
+                type="text" 
+                required 
+                value={customer.firstname}
+                name="firstname"
+                onChange={(e) => setCustomer({...customer, [e.target.name] : e.target.value})}
                 />
-                <TextField
-                    margin="dense"
-                    name="lastname"
-                    value={customer.lastname}
-                    onChange={e => handleInputChange(e)}
-                    label="lastname"
-                    fullWidth
+                <label>Last Name:</label>
+                <input 
+                type="text" 
+                required 
+                value={customer.lastname}
+                name="lastname"
+                onChange={(e) => setCustomer({...customer, [e.target.name] : e.target.value})}
                 />
-                <TextField
-                    margin="dense"
-                    name="streetaddress"
-                    value={customer.streetaddress}
-                    onChange={e => handleInputChange(e)}
-                    label="streetaddress"
-                    fullWidth
+                <label>Street address:</label>
+                <input 
+                type="text" 
+                required 
+                value={customer.streetaddress}
+                name="streetaddress"
+                onChange={(e) => setCustomer({...customer, [e.target.name] : e.target.value})}
                 />
-                <TextField
-                    margin="dense"
-                    name="postcode"
-                    value={customer.postcode}
-                    onChange={e => handleInputChange(e)}
-                    label="postcode"
-                    fullWidth
+                <label>Postcode:</label>
+                <input 
+                type="number" 
+                required 
+                value={customer.postcode}
+                name="postcode"
+                onChange={(e) => setCustomer({...customer, [e.target.name] : e.target.value})}
                 />
-                <TextField
-                    margin="dense"
-                    name="city"
-                    value={customer.city}
-                    onChange={e => handleInputChange(e)}
-                    label="city"
-                    fullWidth
+                <label>City:</label>
+                <input 
+                type="text" 
+                required 
+                value={customer.city}
+                name="city"
+                onChange={(e) => setCustomer({...customer, [e.target.name] : e.target.value})}
                 />
-                <TextField
-                    margin="dense"
-                    name="email"
-                    value={customer.email}
-                    onChange={e => handleInputChange(e)}
-                    label="email"
-                    fullWidth
+                <label>Email:</label>
+                <input 
+                type="text" 
+                required 
+                value={customer.email}
+                name="email"
+                onChange={(e) => setCustomer({...customer, [e.target.name] : e.target.value})}
                 />
-                <TextField
-                    margin="dense"
-                    name="phone"
-                    value={customer.phone}
-                    onChange={e => handleInputChange(e)}
-                    label="phone"
-                    fullWidth
+                <label>Phone:</label>
+                <input 
+                type="number"
+                required 
+                value={customer.phone}
+                name="phone"
+                onChange={(e) => setCustomer({...customer, [e.target.name] : e.target.value})}
                 />
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={handleClose} color="primary">
-                    Cancel
-                </Button>
-                <Button onClick={addCustomer} color="primary">
-                    Save
-                </Button>
-            </DialogActions>
-        </Dialog>
+                <button>Create</button>
+            </form>
         </div>
     );
 }

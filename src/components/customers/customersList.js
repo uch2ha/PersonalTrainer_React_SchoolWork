@@ -6,7 +6,7 @@ import EditCustomer from "./EditCustomer";
 import { Button } from "@material-ui/core";
 import AddTrainingToCustomer from "./AddTrainingToCustomer";
 import CustomerTraining from "./CustomerTraining"
-
+import ShowCustomerTrainings from "./ShowCustomerTrainings"
 import { useHistory } from "react-router";
 
 
@@ -42,20 +42,6 @@ export default function CustomersList(){
             
 
         }
-    }
-
-    const showTrainings = (link) => {
-        console.log(link)
-        
-       
-
-
-        
-
-        //fref.current.toShow();
-        
-
-        
     }
 
     const saveCustomer = (customer) => {
@@ -109,7 +95,7 @@ export default function CustomersList(){
             filterable: false,
             width: 100,
             accessor: "links[2].href",
-            Cell: row => <Button color="secondary" variant="outlined" size="small" onClick={() => showTrainings(row.value)}>show</Button>
+            Cell: row => <ShowCustomerTrainings trainingsLink={row.value} customer={row.original} />
         },
         
         
@@ -152,42 +138,15 @@ export default function CustomersList(){
             filterable: false,
             width: 100,
             accessor: "links[0].href",
-            Cell: row => <Button color="secondary" variant="outlined" size="small" onClick={() => deleteCustomer(row.value)}>Delete</Button>
+            Cell: row => <Button style={{margin: 10}} color="secondary" variant="outlined" size="small" onClick={() => deleteCustomer(row.value)}>Delete</Button>
         }
     ]
 
-    const columnsTrainings = [
-        {
-            Header: "Date",
-            id: 'dateId',
-            accessor: "date"
-        },
-        {
-            Header: "Duration",
-            accessor: "duration"
-        },
-        {
-            Header: "Activity",
-            accessor: "activity"
-        },
-        // {
-        //     sortable: false,
-        //     filterable: false,
-        //     width: 100,
-        //     Cell: row => <EditTrainig updateTraining={updateTraining} training={row.original}/>
-        // },
-        // {
-        //     sortable: false,
-        //     filterable: false,
-        //     width: 100,
-        //     accessor: "links[0].href",
-        //     Cell: row => <Button color="secondary" variant="outlined" size="small" onClick={() => deleteTraining(row.value)}>Delete</Button>
-        // }
-    ]
+    
+    
 
     return (
         <div>
-            <AddCustomer saveCustomer={saveCustomer}/>
             <ReactTable filterable={true} data={customers} columns={columns} style={{ marginTop: 10 }}/>
         </div>
     )

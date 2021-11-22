@@ -6,6 +6,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { PinDropSharp } from '@material-ui/icons';
+import dayjs from 'dayjs';
 
 
 export default function EditTrainig(props){
@@ -34,25 +35,29 @@ export default function EditTrainig(props){
         handleClose();
     }
 
+    const formatDate = (date) =>{
+        return dayjs(date).format('DD/MM/YYYY HH:mm')
+    }
+
     return(
         <div>
-        <Button /*style={{margin: 10}}*/ variant="outlined" color="primary" size="small" onClick={handleClickOpen}>
+        <Button style={{margin: 10}} variant="outlined" color="primary" size="small" onClick={handleClickOpen}>
             Edit
         </Button>
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title">Edit training</DialogTitle>
             <DialogContent>
                 <TextField
-                    autoFocus
                     margin="dense"
                     name="date"
-                    value={training.date}
+                    value={formatDate(training.date)}
                     onChange={e => handleInputChange(e)}
-                    label="date"
+                    label=""
                     type="datetime-local"
                     fullWidth
                 />
                 <TextField
+                    autoFocus
                     margin="dense"
                     name="duration"
                     value={training.duration}

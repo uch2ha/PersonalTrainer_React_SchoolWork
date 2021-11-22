@@ -36,7 +36,7 @@ export default function EditCustomer(props){
 
     return(
         <div>
-        <Button /*style={{margin: 10}}*/ variant="outlined" color="primary" size="small" onClick={handleClickOpen}>
+        <Button style={{margin: 10}} variant="outlined" color="primary" size="small" onClick={handleClickOpen}>
             Edit
         </Button>
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">

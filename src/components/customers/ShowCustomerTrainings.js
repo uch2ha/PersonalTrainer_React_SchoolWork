@@ -1,37 +1,39 @@
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@material-ui/core";
+import dayjs from "dayjs";
 import React, {useState, useEffect, useRef} from "react";
 import ReactTable from "react-table";
-import 'react-table/react-table.css';
-import DayJS from 'react-dayjs';
-import { Button } from "@material-ui/core";
+
 import EditTrainig from "./EditTraining";
 
-import { Link } from "react-router-dom";
 
+export default function ShowCustomerTrainings({trainingsLink, customer}){
 
-
-
-export default function TrainingList(){
-    const [trainings, setTrainings] = useState([]);
-    //const fref = useRef();
+    const [open, setOpen] = React.useState(false);
+    const [trainings, setTrainings] = React.useState([]);
     
     
-    useEffect(() => fetchData(), []);
 
 
     const fetchData = () => {
-        fetch('https://customerrest.herokuapp.com/api/trainings')
+        fetch(trainingsLink)
         .then(response => response.json())
         .then(data => setTrainings(data.content))
         
     }
+    
+    const handleClickOpen = () => {
+      setOpen(true)
+      fetchData()
+    };
+  
+    const handleClose = () => {
+      setOpen(false);
+    };
 
-    //date formater
-    const dayjs = require('dayjs')
-        //import dayjs from 'dayjs' // ES 2015
-        dayjs().format('DD/MM/YYYY')
     const formatDate = (date) =>{
         return dayjs(date).format('DD/MM/YYYY HH:mm')
     }
+
 
     const deleteTraining = (link) => {
         //ask if you are really want to delete
@@ -46,7 +48,6 @@ export default function TrainingList(){
         }
     }
 
-
     const updateTraining = (training, link) =>{
         fetch(link, {
             method: 'PUT',
@@ -58,17 +59,19 @@ export default function TrainingList(){
         .then(res => fetchData())
         .catch(err => console.error(err))
     }
-    
+
 
     const columns = [
         {
             Header: "Date",
             id: 'dateId',
+            // accessor: "date"
             accessor: row => formatDate(row.date) // You format date here
         },
         {
             Header: "Duration",
-            accessor: "duration"
+            accessor: "duration",
+            align: "right"
         },
         {
             Header: "Activity",
@@ -85,15 +88,27 @@ export default function TrainingList(){
             filterable: false,
             width: 100,
             accessor: "links[0].href",
-            Cell: row => <Button color="secondary" variant="outlined" size="small" onClick={() => deleteTraining(row.value)}>Delete</Button>
+            Cell: row => <Button style={{margin: 10}} color="secondary" variant="outlined" size="small" onClick={() => deleteTraining(row.value)}>Delete</Button>
         }
     ]
 
-    return (
+    return(
         <div>
+        <Button style={{margin: 10}} variant="outlined" color="primary" size="small" onClick={handleClickOpen}>
+            Show
+        </Button>
+        <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" fullWidth={true} maxWidth={"md"}>
+            <DialogTitle id="form-dialog-title">Training List of {customer.firstname} {customer.lastname}</DialogTitle>
+                <DialogContent>
+                    <ReactTable filterable={true} data={trainings} columns={columns} style={{ marginTop: 10 }}/>
+                </DialogContent>  
+            <DialogActions>
+                <Button onClick={handleClose} color="primary">
+                    Cancel
+                </Button>
+            </DialogActions>
+        </Dialog>
             
-            <ReactTable filterable={true} data={trainings} columns={columns} style={{ marginTop: 20 }}/>
         </div>
-    )
-
+    );
 }

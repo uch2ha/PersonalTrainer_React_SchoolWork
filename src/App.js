@@ -1,30 +1,38 @@
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
-import { createMuiTheme, ThemeProvider } from '@material-ui/core'
-import { purple } from '@material-ui/core/colors'
-import Layout from './components/Layout'
-import CustomersList from './components/customers/customersList'
-import TrainingsList from './components/trainings/trainingsList'
+
+import CustomersList from './components/customers/CustomersList'
+import HomePage from './components/HomePage'
+import Navbar from './components/Navbar'
+import NotFound from "./components/NotFound"
+import AddCustomer from './components/customers/AddCustomer'
 
 
 
 
 function App() {
   return (
-    <ThemeProvider >
-      <Router>
-        <Layout>
-          <Switch>
-            <Route exact path="/">
-              <CustomersList />
-            </Route>
-            <Route path="/trainigsList">
-              <TrainingsList />
-            </Route>
-          </Switch>
-        </Layout>
-      </Router>
-    </ThemeProvider>
+    <Router>
+    <div className="App">
+      <Navbar />
+      <div className="content">
+        <Switch>
+          <Route exact path="/">
+            <HomePage />
+          </Route>
+          <Route exact path="/customers">
+            <CustomersList />
+          </Route>
+          <Route path="/addCustomer">
+            <AddCustomer/>
+          </Route>
+          <Route path="*">
+            <NotFound />
+          </Route>
+        </Switch>
+      </div>
+    </div>
+  </Router>
   );
 }
 
